@@ -1,0 +1,239 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="./datepicker/css/bootstrap-datepicker3.css">
+    <script type="text/javascript" src="./jquery.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap3-typeahead.js"></script>
+    <script type="text/javascript" src="./datepicker/js/bootstrap-datepicker.min.js"></script>
+	<script type="text/javascript" src="./datepicker/js/bootstrap-datepicker.zh-CN.min.js" charset="UTF-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('.datepicker, .date').datepicker({
+				language: 'zh-CN'
+            });
+            // $('.date').datepicker({
+            //     language: 'zh-CN'
+            // });
+		})
+	</script>
+    <title id="role_info_header">角色信息</title>
+    <style type="text/css" media="screen">
+        #footer {
+            color: #535353;
+            line-height: 25px;
+            padding: 0px 0px 60px 0px;
+            /*margin-top:-120px;*/
+            text-align: center;
+        }
+
+        #footer a { color: #535353; }
+
+        #footer a:hover { color: #999; }
+
+        .tree {
+            font-size:20px;
+            min-height:20px;
+            padding:19px;
+            margin-bottom:20px;
+            background-color:#fbfbfb;
+            border:1px solid #999;
+            -webkit-border-radius:4px;
+            -moz-border-radius:4px;
+            -ms-border-radius:4px;
+            border-radius:4px;
+            -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -ms-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+        .tree li {
+            list-style-type:none;
+            margin:0;
+            padding:10px 5px 0 5px;
+            position: relative;
+        }
+        .tree li::before, .tree li::after {
+            content:'';
+            left:-20px;
+            position:absolute;
+            right: auto;
+        }
+        .tree li::before {
+            border-left:1px solid #999;
+            bottom:50px;
+            height:100%;
+            top:0;
+            width: 1px;
+        }
+        .tree li::after {
+            border-top:1px solid #999;
+            height:20px;
+            top:25px;
+            width: 25px;
+        }
+        .tree li span {
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            -ms-border-radius:5px;
+            border-radius:5px;
+            border:1px solid #999;
+            display:inline-block;
+            padding:3px 8px;
+            text-decoration: none;
+        }
+        .tree li.parent_li>span {
+            cursor: pointer;
+        }
+        .tree>ul>li::before, .tree>ul>li::after {
+            border: 0;
+        }
+        .tree li:last-child::before {
+            height: 30px;
+        }
+        .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+            background:#eee;
+            border:1px solid #94a0b4;
+            color: #000;
+        }
+
+        .form-control-multi {
+          display: block;
+          width: 100%;
+          height: auto;
+          padding: 6px 12px;
+          font-size: 14px;
+          line-height: 1.42857143;
+          color: #555;
+          background-color: #fff;
+          background-image: none;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+                  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+               -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+                  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+        .form-control-multi:focus {
+          border-color: #66afe9;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+                  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+        .form-control-multi::-moz-placeholder {
+          color: #777;
+          opacity: 1;
+        }
+        .form-control-multi:-ms-input-placeholder {
+          color: #777;
+        }
+        .form-control-multi::-webkit-input-placeholder {
+          color: #777;
+        }
+
+        .alert_footer {
+            max-height: 140px;
+            background-color: #f5f5f5;
+        }
+
+        .alert_content {
+            padding: 10px;
+            max-height: 140px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container logined-content">
+
+<div id="nav_block_0" class="nav-block jumbotron">
+    <div class="table-responsive">
+        <h2 class="page-header">角色信息</h2>
+        <!-- <h4 class="page_header">汇总</h4> -->
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>角色ID</td><td>账号</td><td>角色名</td><td>地图</td><td>X</td><td>Y</td><td>类型</td><td>等级</td><td>创建时间</td><td>角色权限</td><td>登录时间</td><td>状态</td>
+                    </tr>
+                </thead>
+                <tbody id="role_info">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="display: none;">
+    <iframe name="post_frame"></iframe>
+</div>
+</div>
+<div id="footer">
+    <p class="e">Latest Versions of Microsoft Edge / Apple Safari / Google Chrome Required.</p>
+    <p class="e">打开GM功能：DEBUG_HIDE_FUNCTIONMENU_BTN = 1 </p>
+
+    <p class="e">COPYRIGHT &copy; 2013 – 2016 MAYDAY X.</p>
+
+    <p class="e">ALL RIGHTS RESERVED.</p>
+</div>
+<nav class="navbar navbar-default navbar-fixed-bottom alert_footer"  role="navigation">
+    <div class="alert_content"></div>
+</nav>
+<script type="text/javascript" src="datatable/enums.js"></script>
+<script type="text/javascript" src="datatable/list.js"></script>
+<script type="text/javascript" src="serverlist.js"></script>
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="showDialog.min.js"></script>
+</body>
+<script type="text/javascript">
+    var url = window.location.href;
+    var serverId = GetQueryString("server_id");
+    var roleId = GetQueryString("role_id");
+    $("#role_info_header").text(roleId);
+    $(function() {
+        $.ajax({
+            url: "php/get_role_info.php",
+            type: "get",
+            data: {server_id: serverId, role_id: roleId},
+            dataType: "json",
+            success: function(data) {
+                if (!data) {
+                    alert("error!");
+                    return;
+                }
+                console.log(data);
+                var html = `<tr><td>${data.actor_id}</td><td>${data.owner}</td><td>${data.name}</td><td>${data.mapid}</td><td>${data.x}</td><td>${data.y}</td><td>${data.typeid}</td><td>${data.level}</td>
+                    <td>${parseDate(data.create_time)}</td><td>${data.right_level}</td><td>${parseDate(data.login_time)}</td><td>${parseStatus(data)}</td></tr>`;
+                $("#role_info").html(html);
+            }
+        });
+    });
+
+function parseDate(time) {
+    if (!time) 
+        return 0;
+    var date = new Date(time * 1000);
+    var dateStr = `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    return dateStr;
+}
+    
+function GetQueryString(name) {
+     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null) return unescape(r[2]); return null;
+}
+
+function parseStatus(data) {
+    switch (data.status) {
+        case 0: return "正常";
+        case 1: return `封禁（到${parseDate(data.overdue_time)})`;
+    }
+}
+</script>
+</html>

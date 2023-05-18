@@ -1,0 +1,15 @@
+﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<script type="text/javascript">
+    var url = location.href;
+    var index = url.indexOf("?");
+    var str = url.substr(index + 1);
+    str = decodeURIComponent(str);
+    var obj = {"result" : -1, "error" : "服务器返回异常"};
+    //try {
+        obj = JSON.parse(str);
+    //} catch (e) {}
+    window.top.PostCallBack(obj);
+</script>
+</body>
+</html>

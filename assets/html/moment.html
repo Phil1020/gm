@@ -1,0 +1,275 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="./confirm/css/jquery-confirm.css">
+
+    <script type="text/javascript" src="./jquery.js"></script>
+    <script type="text/javascript" src="./jquery.form.min.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap3-typeahead.js"></script>
+    <script type="text/javascript" src="./confirm/js/jquery-confirm.js"></script>
+
+    <title>帖子详情</title>
+    <style type="text/css" media="screen">
+        #footer {
+            color: #535353;
+            line-height: 25px;
+            padding: 0px 0px 60px 0px;
+            /*margin-top:-120px;*/
+            text-align: center;
+        }
+
+        #footer a { color: #535353; }
+
+        #footer a:hover { color: #999; }
+
+        .tree {
+            font-size:20px;
+            min-height:20px;
+            padding:19px;
+            margin-bottom:20px;
+            background-color:#fbfbfb;
+            border:1px solid #999;
+            -webkit-border-radius:4px;
+            -moz-border-radius:4px;
+            -ms-border-radius:4px;
+            border-radius:4px;
+            -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -ms-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+        .tree li {
+            list-style-type:none;
+            margin:0;
+            padding:10px 5px 0 5px;
+            position: relative;
+        }
+        .tree li::before, .tree li::after {
+            content:'';
+            left:-20px;
+            position:absolute;
+            right: auto;
+        }
+        .tree li::before {
+            border-left:1px solid #999;
+            bottom:50px;
+            height:100%;
+            top:0;
+            width: 1px;
+        }
+        .tree li::after {
+            border-top:1px solid #999;
+            height:20px;
+            top:25px;
+            width: 25px;
+        }
+        .tree li span {
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            -ms-border-radius:5px;
+            border-radius:5px;
+            border:1px solid #999;
+            display:inline-block;
+            padding:3px 8px;
+            text-decoration: none;
+        }
+        .tree li.parent_li>span {
+            cursor: pointer;
+        }
+        .tree>ul>li::before, .tree>ul>li::after {
+            border: 0;
+        }
+        .tree li:last-child::before {
+            height: 30px;
+        }
+        .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+            background:#eee;
+            border:1px solid #94a0b4;
+            color: #000;
+        }
+
+        .form-control-multi {
+            display: block;
+            width: 100%;
+            height: auto;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+        .form-control-multi:focus {
+            border-color: #66afe9;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+        .form-control-multi::-moz-placeholder {
+            color: #777;
+            opacity: 1;
+        }
+        .form-control-multi:-ms-input-placeholder {
+            color: #777;
+        }
+        .form-control-multi::-webkit-input-placeholder {
+            color: #777;
+        }
+
+        .alert_footer {
+            max-height: 140px;
+            background-color: #f5f5f5;
+        }
+
+        .alert_content {
+            padding: 10px;
+            max-height: 140px;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-lg-10 col-lg-offset-1 logined-content">
+        <div class="nav-block jumbotron" >
+            <div class="table-responsive">
+                <div>
+                    <div>
+                        <h3 style="margin: 20px 0;">帖子设置</h3>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            OwnerID：
+                        </span>
+                        <span class="text-success" style="min-width: 80px;">
+                             <input type="hidden" id="old_owner_id">
+                             <input type="text" class="form-control" style="min-width: 80px;" id="owner_id" value="" readonly="readonly"/>
+                        </span>
+                        <span class="input-group-addon">
+                            PostID：
+                        </span>
+                        <span class="text-success" style="min-width: 80px;">
+                             <input type="hidden" id="old_owner_id">
+                             <input type="text" class="form-control" style="min-width: 80px;" id="post_id" value="" readonly="readonly"/>
+                        </span>
+                        <span class="input-group-addon">
+                                已加载评论数:
+                        </span>
+                        <span class="text-success" style="min-width: 80px;">
+                             <input type="text" class="form-control" style="min-width: 80px;" id="load_reply_count" value="0" readonly="readonly"/>
+                        </span>
+                        <span class="input-group-addon">
+                                GM点赞数:
+                        </span>
+                        <span class="text-success" style="min-width: 80px;">
+                             <input type="text" class="form-control" style="min-width: 80px;" id="upvote_count" value="0"/>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="setUpvoteCount()" style="min-width: 80px;">
+                                设置GM点赞
+                            </button>
+                        </span>
+                        <span class="input-group-addon">
+                                GM隐私:
+                        </span>
+                        <span class="text-success" style="min-width: 80px;">
+                             <input type="text" class="form-control" style="min-width: 80px;" id="gm_shield" value="0"/>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="setGmShield()" style="min-width: 80px;">
+                                设置GM隐私
+                            </button>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="delPost()" style="min-width: 80px;">
+                                删除此贴
+                            </button>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="showReplyPost()" style="min-width: 80px;">
+                                回复
+                            </button>
+                        </span>
+                    </div><br>
+                    <div id="reply_post_div" class="input-group" style="display: none;">
+                        <span class="input-group-addon">
+                            你的账号ID：
+                        </span>
+                        <span class="text-success" style="min-width: 160px;">
+                             <input type="text" class="form-control" style="min-width: 160px;" id="replyer_id" value="" />
+                        </span>
+                        <span class="input-group-addon">回复内容:</span>
+                        <span class="text-success" style="min-width: 160px;">
+                             <input type="text" class="form-control" style="min-width: 160px;" id="reply_content" value="" />
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="replyPost()" style="min-width: 160px;">
+                                提交
+                            </button>
+                        </span>
+                    </div>
+                    <div>
+                        <h3 style="margin: 20px 0;">回复列表</h3>
+                    </div>
+                    <div id="reply_div_head">
+                        <table >
+                            <colgroup>
+                                <col style="width: 60px;"/>
+                                <col style="width: 120px;"/>
+                                <col style="width: 120px;"/>
+                                <col style="width: 83%"/>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <td>楼层</td><td>被回复ID</td><td>回复ID</td><td>回复内容</td></tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="reply_div">
+                        <table class="table table-striped" width="100%">
+                            <colgroup><col style="width: 60px;" /><col style="width: 120px;" /><col style="width: 120px;" /><col style="width: 80%;"/><col style="width: 60px;" /></colgroup>
+                            <tbody id="reply_list">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="load_more" align="right" style="display: none">
+                        <button class="btn btn-info" type="button" onclick="loadMoreReply()" style="min-width: 160px;">
+                            加载更多
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: none;">
+            <iframe name="post_frame"></iframe>
+        </div>
+    </div>
+</div>
+<div class="row" id="footer" >
+    <p class="e">Latest Versions of Microsoft Edge / Apple Safari / Google Chrome Required.</p>
+
+    <p class="e">COPYRIGHT &copy; 2013 – 2018 MAYDAY X.</p>
+
+    <p class="e">ALL RIGHTS RESERVED.</p>
+</div>
+<nav class="navbar navbar-default navbar-fixed-bottom alert_footer"  role="navigation">
+    <div class="alert_content"></div>
+</nav>
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="showDialog.min.js"></script>
+<script type="text/javascript" src="moment.js"></script>
+</body>
+</html>

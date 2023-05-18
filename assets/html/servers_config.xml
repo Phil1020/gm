@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf8"?>
+<servers>
+    <server>
+        <host>192.168.92.179</host>
+        <server_id>1192</server_id>
+        <gm_port>14258</gm_port>
+        <server_name>服务器1</server_name>
+    </server>
+    <server>
+        <host>192.168.92.181</host>
+        <server_id>1193</server_id>
+        <gm_port>14258</gm_port>
+        <server_name>服务器2</server_name>
+    </server>
+    
+</servers>

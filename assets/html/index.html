@@ -1,0 +1,1429 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="./confirm/css/jquery-confirm.css">
+
+    <script type="text/javascript" src="./axios.min.js"></script>
+    <script type="text/javascript" src="./jquery.js"></script>
+    <script type="text/javascript"  src="./jquery.json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jquery-i18n-properties/jquery-i18n-properties/jquery.i18n.properties.min.js"></script>
+    <script type="text/javascript" src="./jquery.form.min.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="./bootstrap/js/bootstrap3-typeahead.js"></script>
+    <script type="text/javascript" src="./confirm/js/jquery-confirm.js"></script>
+
+    <title>Web工具</title>
+    <style type="text/css" media="screen">
+        #footer {
+            color: #535353;
+            line-height: 25px;
+            padding: 0 0 60px 0;
+            /*margin-top:-120px;*/
+            text-align: center;
+        }
+
+        #footer a {
+            color: #535353;
+        }
+
+        #footer a:hover {
+            color: #999;
+        }
+
+        .tree {
+            font-size: 20px;
+            min-height: 20px;
+            padding: 19px;
+            margin-bottom: 20px;
+            background-color: #fbfbfb;
+            border: 1px solid #999;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -ms-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            -ms-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .tree li {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px 5px 0 5px;
+            position: relative;
+        }
+
+        .tree li::before, .tree li::after {
+            content: '';
+            left: -20px;
+            position: absolute;
+            right: auto;
+        }
+
+        .tree li::before {
+            border-left: 1px solid #999;
+            bottom: 50px;
+            height: 100%;
+            top: 0;
+            width: 1px;
+        }
+
+        .tree li::after {
+            border-top: 1px solid #999;
+            height: 20px;
+            top: 25px;
+            width: 25px;
+        }
+
+        .tree li span {
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+            border-radius: 5px;
+            border: 1px solid #999;
+            display: inline-block;
+            padding: 3px 8px;
+            text-decoration: none;
+        }
+
+        .tree li.parent_li > span {
+            cursor: pointer;
+        }
+
+        .tree > ul > li::before, .tree > ul > li::after {
+            border: 0;
+        }
+
+        .tree li:last-child::before {
+            height: 30px;
+        }
+
+        .tree li.parent_li > span:hover, .tree li.parent_li > span:hover + ul li span {
+            background: #eee;
+            border: 1px solid #94a0b4;
+            color: #000;
+        }
+
+        .form-control-multi {
+            display: block;
+            width: 100%;
+            height: auto;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+
+        .form-control-multi:focus {
+            border-color: #66afe9;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+
+        .form-control-multi::-moz-placeholder {
+            color: #777;
+            opacity: 1;
+        }
+
+        .form-control-multi:-ms-input-placeholder {
+            color: #777;
+        }
+
+        .form-control-multi::-webkit-input-placeholder {
+            color: #777;
+        }
+
+        .alert_footer {
+            max-height: 140px;
+            background-color: #f5f5f5;
+        }
+
+        .alert_content {
+            padding: 10px;
+            max-height: 140px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid logined-content">
+        <div class="navbar-header">
+            <button type="button" id="toggle-button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" data-lang="gmName" href="javascript:">Web工具</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="nav-class dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:" aria-expanded="false" >
+                        <span data-lang="tools">工具</span><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-class" id="nav_menu_0">
+                            <a href="javascript:Nav_Block(0);" data-lang="registry">Registry</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_2">
+                            <a href="javascript:Nav_Block(2);" data-lang="accountSystem">账号系统</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_5">
+                            <a href="javascript:Nav_Block(5);" data-lang="notice">公告</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_12">
+                            <a href="javascript:Nav_Block(12);" data-lang="globalConfig">全局配置</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_16">
+                            <a href="javascript:Nav_Block(16);" data-lang="zoneServerTool">区服工具</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_3">
+                            <a href="javascript:Nav_Block(3);" data-lang="playerLoginLimit">玩家登录限制</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-class dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:" aria-expanded="false">
+                        <span data-lang="singleServiceCurrencyTools">单服通用工具</span> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-class" id="nav_menu_4">
+                            <a data-lang="GM" href="javascript:Nav_Block(4);">GM</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_7">
+                            <a data-lang="queryPlayerData" href="javascript:Nav_Block(7);">玩家数据查询</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_9">
+                            <a data-lang="kickSystem" href="javascript:Nav_Block(9);">踢人系统</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_11">
+                            <a data-lang="blockingSystem" href="javascript:Nav_Block(11);">封禁系统</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:" aria-expanded="false">
+                        <span data-lang="userAndPermissions">用户与权限</span><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-class" id="nav_menu_21">
+                            <a href="javascript:Nav_Block(21);" data-lang="userManagement">用户管理</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_22">
+                            <a href="javascript:Nav_Block(22);" data-lang="permissionManagement">权限管理</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:" aria-expanded="false">
+                        Debug<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-class" id="nav_menu_24">
+                            <a href="javascript:Nav_Block(24);">pprof</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-class dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:" aria-expanded="false">
+                        <span data-lang="singleServiceCurrencyTools">充值管理</span> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-class" id="nav_menu_4">
+                            <a data-lang="GM" href="javascript:Nav_Block(25);">订单查询</a>
+                        </li>
+                        <li class="nav-class" id="nav_menu_7">
+                            <a data-lang="queryPlayerData" href="javascript:Nav_Block(26);">操作日志</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:" aria-expanded="false">
+                        <span data-lang="accountSystem">账号系统</span><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="nav-class" id="nav_menu_21">
+                            <a href="javascript:Nav_Block(21);">权限管理</a>
+                        </li>
+                    </ul>
+                </li> -->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-class">
+                    <!-- <button type="button" class="btn btn-info">中/EN</button> -->
+                    <a onclick="changeLand()" class="navbar-brand" href="javascript:">中/EN</a>
+                </li>
+            </ul>
+            
+        </div>
+       
+    </div>
+</nav>
+
+<div class="">
+    <div class="col-lg-10 col-lg-offset-1 logined-content">
+
+        <div id="nav_block_24" class="nav-block jumbotron" style="display: none">
+            <a class="table-responsive">
+                <h2 class="page-header">Profile</h2>
+
+                <ol class="breadcrumb">
+                    <li><a href="gm/debug/pprof/allocs?debug=1">Allocs</a></li>
+                    <li><a href="gm/debug/pprof/block?debug=1">Block</a></li>
+                    <li><a href="gm/debug/pprof/heap?debug=1">Heap</a></li>
+                    <li><a href="gm/debug/pprof/goroutine?debug=1">Goroutine</a></li>
+                    <li><a href="gm/debug/pprof/mutex?debug=1">Mutex</a></li>
+                    <li><a href="gm/debug/pprof/threadcreate?debug=1">Thread create</a></li>
+                    <li><a href="gm/debug/pprof/goroutine?debug=2">Full goroutine stack dump</a></li>
+                </ol>
+
+                <form action="gm/debug/pprof/trace?debug=1" method="get">
+                    <label for="tseconds">
+                            <span>
+                                <span data-lang="time">时间</span>:<input type="number" id="tseconds" name="seconds" required value="30">
+                            </span>
+                    </label>
+                    <button type="submit">Get Trace File</button>
+                </form>
+
+                <form action="gm/debug/pprof/profile?debug=1" method="get">
+                    <label for="pseconds">
+                            <span>
+                                <span data-lang="time">时间</span>:<input type="number" id="pseconds" name="seconds" required value="30">
+                            </span>
+                    </label>
+                    <button type="submit">Get Profile</button>
+                </form>
+                <br>
+
+                <div>
+                    <form action="gm/debug/start_prof" method="get">
+                        <label for="op">
+                            <span data-lang="analysisType">分析类型</span>:<input type="text" id="op" name="op" required>
+                        </label>
+                        <label for="sec">
+                            <span data-lang="duration">持续时间</span>:
+                            <input type="text" id="sec" name="sec" value="5">
+                        </label>
+                        <button type="submit">start web prof</button>
+                    </form>
+
+                    <div>
+                        <h3>
+                            <a href="gm/debug/stop_prof">stop web prof</a>
+                            <br>
+                            <a href="gm/debug/ui/">pprof web</a>
+                        </h3>
+                    </div>
+                </div>
+
+                <br>
+                <form action="gm/debug/addr2line" method="get">
+                    <label for="ptr">
+                        <input type="text" id="ptr" name="ptr" required value="0x">
+                    </label>
+                    <label for="lid">
+                        <span>LobbyID:</span><input type="text" id="lid" name="lid" required>
+                    </label>
+                    <button type="submit">Addr2Line</button>
+                </form>
+            </a>
+        </div>
+
+        <div id="nav_block_0" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header">Registry</h2>
+                <div>
+                    <div>
+                        <div class="col-lg-4" style="min-width: 60px;">
+                            <span class="input-group-addon">
+                                <input type="checkbox" id="is_show_service" checked="checked"/> Service
+                            </span>
+                            <span class="input-group-addon" style="min-width: 100px;">
+                                <select id="query_filter" class="form-control">
+                                    <option value="0">All</option>
+                                    <option value="1">Server</option>
+                                    <option value="2">Node</option>
+                                </select>
+                            </span>
+                            <span class="input-group-addon" style="min-width: 160px;">
+                                <input type="text" id="query_filter_txt" class="form-control" placeholder="filter">
+                            </span>
+                            <div class="input-group-addon" style="min-width: 60px;">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" onclick=" queryRegistry() "
+                                            style="min-width: 60px;" data-lang="search">查询</button>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" onclick="clickAddRegistryServer()"
+                                            style="min-width: 60px;" data-lang="addServer">添加Server</button>
+                                </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" onclick="clickAddRegistryService()"
+                                            style="min-width: 60px;" data-lang="addService">添加Service</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="registry_server_div" style="display: none;">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Servers</th>
+                            </tr>
+                            <tr>
+                                <td>App</td>
+                                <td>Server</td>
+                                <td>Division</td>
+                                <td>Node</td>
+                                <td>UseAgent</td>
+                                <td>NodeStatus</td>
+                                <td>ServiceStatus</td>
+                            </tr>
+                            </thead>
+                            <tbody id="registry_server_data">
+                            {{/*
+                            <tr>
+                                <td>App</td>
+                                <td>Server</td>
+                                <td>Division</td>
+                                <td>Node</td>
+                                <td>UseAgent</td>
+                                <td>NodeStatus</td>
+                                <td>ServiceStatus</td>
+                            </tr>
+                            */}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="registry_service_div" style="display: none;">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Services</th>
+                            </tr>
+                            <tr>
+                                <td>App</td>
+                                <td>Server</td>
+                                <td>Division</td>
+                                <td>Node</td>
+                                <td>Service</td>
+                                <td>ServiceIp</td>
+                                <td>ServicePort</td>
+                                <td>AdminPort</td>
+                                <td>RpcPort</td>
+                            </tr>
+                            </thead>
+                            <tbody id="registry_service_data">
+                            {{/*
+                            <tr>
+                                <td>App</td>
+                                <td>Server</td>
+                                <td>Division</td>
+                                <td>Node</td>
+                                <td>Service</td>
+                                <td>ServiceIp</td>
+                                <td>ServicePort</td>
+                                <td>RpcPort</td>
+                            </tr>
+                            */}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="registry_service_add_div" style="display: none;">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Add Service</th>
+                            </tr>
+                            <tr>
+                                <td>App</td>
+                                <td>Server</td>
+                                <td>Division</td>
+                                <td>Node</td>
+                                <td>Service</td>
+                                <td>ServiceIp</td>
+                                <td>ServicePort</td>
+                                <td>AdminPort</td>
+                                <td>RpcPort</td>
+                            </tr>
+                            </thead>
+                            <tbody id="registry_service_add">
+                            <tr>
+                                <td style="max-width: 40px;"><input type="text" class="form-control"
+                                                                    id="registry_service_add_app" value="neko"/>
+                                </td>
+                                <td><input type="text" class="form-control" id="registry_service_add_server"
+                                           value=""/></td>
+                                <td><input type="text" class="form-control" id="registry_service_add_division"
+                                           value=""/></td>
+                                <td><input type="text" class="form-control" id="registry_service_add_node"
+                                           value=""/></td>
+                                <td style="min-width: 160px;"><input type="text" class="form-control"
+                                                                     id="registry_service_add_service" value=""/>
+                                </td>
+                                <td><input type="text" class="form-control" id="registry_service_add_service_ip"
+                                           value=""/></td>
+                                <td style="max-width: 100px;"><input type="text" class="form-control"
+                                                                     id="registry_service_add_service_port"
+                                                                     value=""/></td>
+                                <td style="max-width: 100px;"><input type="text" class="form-control"
+                                                                     id="registry_service_add_admin_port" value=""/>
+                                </td>
+                                <td style="max-width: 100px;"><input type="text" class="form-control"
+                                                                     id="registry_service_add_rpc_port" value=""/>
+                                </td>
+                                <td>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button" onclick="addRegistryService()"
+                                                    style="min-width: 60px;">
+                                                确定
+                                            </button>
+                                         </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="registry_server_add_div" style="display: none;">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Add Server</th>
+                            </tr>
+                            <tr>
+                                <td>App</td>
+                                <td>Server</td>
+                                <td>Division</td>
+                                <td>Node</td>
+                                <td>UseAgent</td>
+                                <td>NodeStatus</td>
+                                <td>ServiceStatus</td>
+                            </tr>
+                            </thead>
+                            <tbody id="registry_server_add">
+                            <tr>
+                                <td><input type="text" class="form-control" id="registry_server_add_app"
+                                           value="neko"/></td>
+                                <td><input type="text" class="form-control" id="registry_server_add_server"
+                                           value=""/></td>
+                                <td><input type="text" class="form-control" id="registry_server_add_division"
+                                           value=""/></td>
+                                <td><input type="text" class="form-control" id="registry_server_add_node" value=""/>
+                                </td>
+                                <td><input type="text" class="form-control" id="registry_server_add_use_agent"
+                                           value="0"/></td>
+                                <td><input type="text" class="form-control" id="registry_server_add_node_status"
+                                           value="0"/></td>
+                                <td><input type="text" class="form-control" id="registry_server_add_service_status"
+                                           value="0"/></td>
+                                <td>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="button" onclick="addRegistryServer()"
+                                                    style="min-width: 60px;">
+                                                确定
+                                            </button>
+                                         </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav_block_2" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="accountSystem" >账号系统</h2>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        AccountID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="query_account_id"
+                           value=""/>
+                    <span class="input-group-addon">
+                        DeviceId:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="query_device_id" value=""
+                           readonly="readonly"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="queryDeviceIdByAccountId() "
+                                style="min-width: 160px;" data-lang="search">
+                            查询
+                        </button>
+                    </span>
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        DeviceId:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="account_device_id"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="queryAccountInfoByDeviceId() "
+                                style="min-width: 160px;" data-lang="search">
+                            查询
+                        </button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" style="min-width: 160px;"
+                                onclick="bindLobby()" data-lang="bind">绑定</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="button" style="min-width: 160px"
+                                onclick="unbindLobby()" data-lang="unbind">解绑</button>
+                    </span>
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        AccId
+                    </span>
+                    <span class="input-group-addon" id="change_server_accid" style="min-width: 160px;"></span>
+                    <span class="input-group-addon">
+                        Lobby
+                    </span>
+                    <span class="input-group-addon" id="change_server_old_lobby" style="min-width: 160px;"></span>
+                    <span class="input-group-addon" >
+                        <span data-lang="newLobby">新Lobby</span>:
+                    </span>
+                    <input id="change_server_new_lobby" type="text" class="form-control" style="min-width: 40px;">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="changeServer()" style="min-width: 160px;" data-lang="switchService">
+                            转服
+                        </button>
+                    </span>
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span data-lang="recommendService">推荐服</span>：
+                    </span>
+                    <span class="input-group-addon" id="see_recommend" style="min-width: 160px;"></span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="seeRecommend()" style="min-width: 160px;" data-lang="searchRecommendService">查询推荐服</button>
+                    </span>
+                    <span class="input-group-addon" ><span data-lang="setRecommendLobby">设置推荐Lobby</span>：</span>
+                    <input id="change_recommend_lobby" type="text" class="form-control" style="min-width: 40px;">
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="button" onclick="changeRecommend()"
+                                style="min-width: 160px;" data-lang="setNewRecommendLobby">
+                            设置新推荐Lobby
+                        </button>
+                    </span>
+                </div>
+
+                <div class="input-group">
+                <span class="input-group-addon" data-lang="changePlayerLobby">
+                    更改玩家Lobby
+                    </span>
+
+                    <span class="input-group-addon"><span data-lang="newLobbyId">新LobbyID</span>:</span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="old_lobby_id" value=""/>
+                    <span class="input-group-addon"><span data-lang="oldLobbyId">旧AccountID</span>:</span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="old_account_id" value=""/>
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" style="min-width: 160px;" onclick="changeLobby()" data-lang="change">更改</button>
+                    </span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span data-lang="blockingPlayer">封禁玩家</span>:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="account_id" value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" style="min-width: 160px;" onclick="banAccount()" data-lang="blocking">封禁</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="button" style="min-width: 160px" onclick="unbanAccount()" data-lang="unblocking">解封</button>
+                    </span>
+                </div>
+                <br>
+            </div>
+        </div>
+
+        <div id="nav_block_5" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="notice" >公告</h2>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" style="min-width: 160px; margin-bottom: 10px;"
+                        onclick="getNotice()">查询全部公告
+                </button>
+                <div id="history_notices_div" style="display: none;">
+                    <table class="table table-striped">
+                        <tbody id="history_notices"></tbody>
+                    </table>
+                </div>
+            </div>
+            <hr style="border-bottom: 1px solid #292929; margin-top: 50px;"/>
+            <h2>公告设置</h2><br>
+            <div class="input-group">
+                <span class="input-group-addon">公告ID:</span>
+                <input id="old_content_id" type="text" class="form-control" style="min-width: 100px;">
+            </div>
+
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                <button class="btn btn-info" style="min-width: 160px;" onclick="getNoticeById()">查询公告</button>
+                <button class="btn btn-info" style="min-width: 160px;" onclick="updateNotice()">添加公告</button>
+                <button class="btn btn-info" style="min-width: 160px;" onclick="modifyNotice()">修改公告</button>
+                <button class="btn btn-info" style="min-width: 160px;" onclick="deleteOldNotice()">删除公告</button>
+            </div>
+
+            <div class="form-group">
+                <div class="table-responsive">
+                    <span class="input-group-addon">
+                        公告类型：
+                    </span>
+                    <span class="input-group-btn">
+                        <label for="update_notice_notice_type"></label>
+                            <select id="update_notice_notice_type" class="form-control" style="min-width: 160px;">
+                            <option value="1">永久弹出</option>
+                            <option value="2">当日首次弹出</option>
+                            <option value="3">只弹出一次</option>
+                        </select>
+                    </span><br>
+                    <span class="input-group-addon">
+                        显示类型：
+                    </span>
+                    <span class="input-group-btn">
+                        <select id="update_notice_show_type" class="form-control" style="min-width: 160px;">
+                            <option value="1">更新</option>
+                            <option value="2">活动</option>
+                            <option value="3">常驻通知</option>
+                        </select>
+                    </span><br>
+                    <span class="input-group-addon">
+                        标签类型：
+                    </span>
+                    <span class="input-group-btn">
+                        <select id="update_notice_label_type" class="form-control" style="min-width: 160px;">
+                            <option value="0">无</option>
+                            <option value="1">NEW</option>
+                        </select>
+                    </span><br>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" style="min-width: 150px;">排序值:</span>
+                    <input id="update_notice_sort_value" type="text" class="form-control" style="min-width: 100px;">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon" style="min-width: 150px;">标题:</span>
+                    <input id="update_notice_title" type="text" class="form-control" style="min-width: 100px;">
+                </div>
+                <br>
+                <textarea id="update_notice_content" class="form-control" rows="10"></textarea><br>
+            </div>
+        </div>
+
+        <div id="nav_block_16" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="zoneServerTool" >区服工具</h2>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-addon"  data-lang="serverGroupingSettings">服务器分组设置</span><br/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="addLobbyGroup()" style="min-width: 80px;" data-lang="addGrouping">添加分组</button>
+                        </span>
+                        <input type="text" id="server_lobby_group_id" class="form-control" placeholder="服务器组ID"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="getLatestGroupId()" style="min-width: 100px;" data-lang="searchNewGroup">查询新建分组</button>
+                        </span>&nbsp;
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" type="button" onclick="disbandLobbyGroup()" style="min-width: 80px;" data-lang="disbandGroup">解散分组</button>
+                        </span><br/>
+                        <span class="input-group-addon" data-lang="addService1">添加服务器</span><br/>
+                        <input type="text" id="server_lobby_id" class="form-control" placeholder="服务器ID"/><br/>
+                        <span class="input-group-addon" data-lang="mapId">地图ID</span><br/>
+                        <input type="text" id="server_map_id" class="form-control" placeholder="地图ID"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" type="button" onclick="joinLobbyGroup()" style="min-width: 80px;" data-lang="joinGroup">加入分组</button>
+                        </span>&nbsp;
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" type="button" onclick="outLobbyGroup()" style="min-width: 80px;" data-lang="outGroup">退出分组</button>
+                        </span>&nbsp;
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button" onclick="getGroupsInfo()" style="min-width: 100px;" data-lang="searchGroupInfo">查询分组信息</button>
+                        </span>
+                    </div><br>
+
+                    <div id="server_group_div" style="display: none;">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr><th data-lang="serverGroupingSettings">服务器分组设置</th></tr>
+                            <tr><td data-lang="serverGroupId">服务器组ID</td><td data-lang="serverList">服务器列表</td></tr>
+                            </thead>
+                            <tbody id="server_group_data"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav_block_12" class="nav-block jumbotron" style="display: none">
+            <h2 class="page-header" data-lang="globalConfig">全局配置</h2>
+            <div class="table-responsive">
+                <div class="input-group">
+                     <span class="input-group-btn">
+                         <button class="btn btn-info" type="button" onclick="queryGlobalConfig() "
+                                 style="min-width: 60px;" data-lang="search">查询</button>
+                     </span>
+                    <span class="input-group-btn">
+                         <button class="btn btn-info" type="button" onclick="clickAddRegistryGlobal()"
+                                 style="min-width: 60px;" data-lang="addGlobalConfig">添加GlobalConfig</button>
+                     </span>
+                </div>
+                <br>
+            </div>
+            <div id="registry_global_add_div" style="display: none;">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Add Global</th>
+                    </tr>
+                    <tr>
+                        <td>T_Category</td>
+                        <td>T_key</td>
+                        <td>T_Value</td>
+                    </tr>
+                    </thead>
+                    <tbody id="registry_global_add">
+                    <tr>
+                        <td><input type="text" class="form-control" id="registry_global_add_category" value=""/>
+                        </td>
+                        <td><input type="text" class="form-control" id="registry_global_add_key" value=""/></td>
+                        <td><input type="text" class="form-control" id="registry_global_add_value" value=""/></td>
+                        <td>
+                            <span class="input-group-btn">
+                                <button class="btn btn-info" type="button" onclick="addRegistryGlobalConfig()"
+                                        style="min-width: 60px;" data-lang="confirm">
+                                    确定
+                                </button>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="registry_global_div" style="display: none;">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Global</th>
+                    </tr>
+                    <tr>
+                        <td>t_category</td>
+                        <td>t_key</td>
+                        <td>t_value</td>
+                    </tr>
+                    </thead>
+                    <tbody id="registry_golbal_data">
+                    {{/**/}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="nav_block_3" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="playerLoginLimit">玩家登录限制</h2>
+                <table class="" style="border-collapse: separate; border-spacing: 15px 30px" id="player_login_policy">
+                    <thead>
+                    <tr>
+                        <th data-lang="id">ID</th>
+                        <th data-lang="startTime">开始时间</th>
+                        <th data-lang="endTime">结束时间</th>
+                        <th data-lang="remarks">备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <br>
+                <h3 data-lang="add">添加</h3>
+                <form>
+                    <label>
+                        <span data-lang="id">ID</span> <input type="number" id="player_policy_id"/>
+                    </label>
+                    <label>
+                        <span data-lang="startTime">开始时间</span><input type="datetime-local" id="player_policy_begin"/>
+                    </label>
+                    <label>
+                        <span data-lang="endTime">结束时间</span><input type="datetime-local" id="player_policy_end"/>
+                    </label>
+                    <label>
+                        <span data-lang="remarks">备注</span><input id="player_policy_memo"/>
+                    </label>
+                    <button onclick="addPlayerLoginPolicy()" data-lang="add">添加</button>
+                    <button onclick="editPlayerLoginPolicy()" data-lang="modifyUnfilledFieldsWillNotBeModified">修改(未填的字段不修改)</button>
+                </form>
+                <br>
+
+
+                <h3 data-lang="searchPlayerAccountRestrictions">查询玩家账号限制</h3>
+                <label>
+                    <span data-lang="playerId">玩家ID</span><input id="player_id_policy"/>
+                    <button onclick="queryPlayerPolicy()" data-lang="search">查询</button>
+                    <div>
+                        <span data-lang="result">结果</span> <textarea id="player_id_policy_display"></textarea>
+                    </div>
+                </label>
+                <label>
+                    <span data-lang="authorityId">权限ID</span><input id="set_player_policy">
+                    <button onclick="setPlayerPolicy()" data-lang="set">设置</button>
+                </label>
+                <h3 data-lang="searchAllPlayerLoginLimit">查询登录限制的所有玩家</h3>
+                <label>
+                    <span data-lang="authorityId">权限ID</span><input id="policy_id_of_player"/>
+                    <button onclick="queryPlayerByPolicy()" data-lang="search">查询</button>
+                    <div>
+                        <span data-lang="result">结果</span><textarea id="policy_id_of_player_display"></textarea>
+                    </div>
+                </label>
+                <h3 data-lang="setInitialPermissions" >设置初始权限</h3>
+                <h4><span data-lang="currentDefaultPermissions">当前默认权限</span>:<span id="default_policy">N/A</span></h4>
+                <label>
+                    <span data-lang="authorityId">权限ID</span><input id="default_policy_input"/>
+                    <button onclick="setDefaultPolicy()" data-lang="set">设置</button>
+                </label>
+                <h3 data-lang="kickAllPlayer">踢出所有玩家</h3>
+                <label>
+                    <span data-lang="authorityId">权限ID</span><input id="kick_policy"/>
+                    <button onclick="kickPlayerByPolicy()" data-lang="kick">踢出</button>
+                </label>
+            </div>
+        </div>
+
+        <div id="nav_block_6" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="luaPutTools">Lua注入工具</h2>
+                <p>
+                    <span data-lang="putScript">注入脚本</span>： 
+                    <textarea class="form-control" style="height: 240px;" id="lua_script_textarea"></textarea>
+                    <span class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="button" onclick="SubmitLuaStr()"
+                        style="min-width: 120px;" data-lang="modify">修改
+                </button>
+                <button class="btn btn-success" type="button" onclick="GetLuaStr()"
+                        style="min-width: 120px;" data-lang="search">查询
+                </button>
+            </span>
+        </span>
+                <form style="display:none;" class="input-group" name="login_notice_form" target="post_frame"
+                      id="lua_script_form" style="width: 100%;">
+                    <input id="lua_script_submit_luastr" name="lua_str" type="text" value=""/>
+                    <input id="lua_script_submit_url" name="url" type="text" value=""/>
+                    <input id="lua_script_submit_button" type="submit" value="submit"/>
+                </form>
+                </p>
+            </div>
+        </div>
+
+        <div id="nav_block_9" class="nav-block jumbotron" style="display: none;">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="kickSystem">踢人系统</h2>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        AccountID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 100px;"
+                           id="kick_account_id" value=""/>
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 100px;" id="kick_lobby_id"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="kickAccount() " style="min-width: 160px;" data-lang="kick">
+                            踢人
+                        </button>
+                    </span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        RoomID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 100px;"
+                           id="get_kick_room_id" value=""/>
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 100px;"
+                           id="get_kick_lobby_id" value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="kickOutRoom()"
+                                style="min-width: 160px;" data-lang="kickRoom">
+                            踢出房间
+                        </button>
+                    </span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 100px;" id="lobby_id" value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="kickOutLobby()"
+                                style="min-width: 160px;" data-lang="kickHall">
+                            踢出大厅
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav_block_7" class="nav-block jumbotron" style="display: none;">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="queryPlayerData">玩家数据查询</h2>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        AccountID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;"
+                           id="get_acc_details_account_id" value=""/>
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="get_acc_details_lobby_id"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="queryAccountDetails()"
+                                style="min-width: 160px;" data-lang="search">
+                            查询
+                        </button>
+                    </span>
+                </div>
+
+                <div class="input-group">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th><span data-lang="accountInfo">账号信息</span>:</th>
+                        </tr>
+                        </thead>
+                        <tbody id="acc_details_body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav_block_4" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="processControl">流程控制</h2>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="cr_stage_lobby_id"
+                           value=""/>
+                    <span class="input-group-addon">
+                        RoomID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="cr_stage_room_id"
+                           value=""/>
+                    <span class="input-group-addon">
+                        StageID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="cr_stage_id"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" data-lang="roomChangeStage" onclick="ChangeStage()" style="min-width: 160px;">
+                            房间阶段切换
+                    </button>
+                    </span>
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="cl_stage_lobby_id"
+                           value=""/>
+                    <span class="input-group-addon">
+                        StageID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="cl_stage_id"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="ChangeLobbyStage()"
+                                style="min-width: 160px;" data-lang="singleServiceChangeStage">
+                            单服阶段切换
+                    </button>
+                    </span>
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        StageID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="ca_stage_id"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" data-lang="allServiceChangeStage" type="button" onclick="ChangeAllStage()" style="min-width: 160px;">
+                            全服阶段切换
+                    </button>
+                    </span>
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        LobbyID：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="rr_lobby_id"
+                           value=""/>
+                    <span class="input-group-addon">
+                        RankType：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="rr_rank_type"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" data-lang="resetLeaderboard" onclick="ResetRank()" style="min-width: 160px;">
+                            重置排行榜
+                    </button>
+                    </span>
+                </div>
+                <br>
+            </div>
+
+
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="addResources">加资源</h2>
+                <div class="col-lg-4">
+                    <span class="input-group-addon" style="min-width: 50px;">
+                        <select id="prop_type" class="form-control">
+                            <option value="1" data-lang="addCapital">增加资产</option>
+                            <option value="2" data-lang="setCapital">设置资产</option>
+                            <option value="3" data-lang="prop">道具</option>
+                            <option value="4" data-lang="physicalStrength">体力</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        AccountID：
+                    </span>
+                    <input type="text" class="form-control" autocomplete="on" style="min-width: 50px;" id="add_goods_acc_id"
+                           value=""/>
+                    <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 160px;" id="add_goods_lobby_id" value=""/>
+                    <span class="input-group-addon">
+                            <span data-lang="parameterList">参数列表</span> ：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="add_goods_param_list"
+                           value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="AddProp() " style="min-width: 160px;" data-lang="add">
+                            添加
+                    </button>
+                    </span>
+                </div>
+                <br>
+                <div class="input-group">
+                    <input type="text" class="form-control" style="min-width: 160px;" id="add_multiple_goods_param_list" value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="AddProps() " style="min-width: 160px;" data-lang="add_props">
+                            批量道具
+                    </button>
+                    </span>
+                    <br>
+                    <span class="input-group-addon">
+                        批量道具：输入道具ID用英文逗号分隔
+                        例：2001,2002
+                    </span>
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="AutoAddProp() " style="min-width: 160px;" data-lang="auto_add">
+                            增加10w钻和10w金币
+                    </button>
+                    </span>
+                </div>
+                <br>
+            </div>
+
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="operationTime">时间操作</h2>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <span data-lang="addTime_second">时间增量(秒)</span>：
+                    </span>
+                    <input type="text" class="form-control" style="min-width: 50px;" id="add_time" value=""/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="AddTime()"
+                                style="min-width: 160px;" data-lang="add">
+                            添加
+                        </button>
+                    </span>
+                </div>
+                <br>
+            </div>
+            <div class="table-responsive">
+                <div class="input-group">
+                     <span class="input-group-addon" data-lang="serverTime">
+                        服务器时间
+                    </span>
+                    <span class="input-group-addon" id="change_server_time" style="min-width: 160px;"></span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="QueryTime()"
+                                style="min-width: 160px;" data-lang="search">
+                            查询
+                        </button>
+                    </span>
+                </div>
+                <br>
+            </div>
+            <div class="table-responsive">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" onclick="ResetTime()"
+                                style="min-width: 160px;" data-lang="resetTime">
+                            重置时间
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav_block_11" class="nav-block jumbotron" style="display: none">
+            <h2 class="page-header" data-lang="blockingSystem">封禁系统</h2>
+            <div class="table-responsive">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" style="min-width: 160px;"
+                                onclick="query_player_ban_list()" data-lang="queryBanPlayerID">查询被禁玩家ID</button>
+                    </span>
+                </div>
+                <br>
+            </div>
+            <div class="input-group">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span data-lang="banList">封号列表</span>：</th>
+                    </tr>
+                    </thead>
+                    <tbody id="band_account_list"></tbody>
+                </table>
+            </div>
+
+            <div>
+                <div>
+                    <label>
+                        <span>AccountID:</span><input type="number" id="mute_acc_id">
+                    </label>
+                    <label>
+                        <span>LobbyID:</span><input type="number" id="mute_lobby_id">
+                    </label>
+                    <button onclick="mute_op(1)" data-lang="mute">禁言</button>
+                    <button onclick="mute_op(0)" data-lang="unMute">解封</button>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <div class="input-group">
+                            <span class="input-group-addon">
+                        LobbyID:
+                    </span>
+                        <label for="mute_list_lobby_id"></label>
+                        <input type="text" class="form-control" style="min-width: 60px;" id="mute_list_lobby_id"
+                               value="">
+
+                        <span class="input-group-btn">
+                         <button class="btn btn-info" type="button" onclick="queryPlayerMuteList()"
+                                 style="min-width: 60px;" data-lang="queryPlayerMuteId">查询被禁言玩家ID</button>
+                     </span>
+                    </div>
+                    <br>
+                </div>
+                <div class="input-group">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th><span data-lang="muteList">禁言列表</span>：</th>
+                        </tr>
+                        </thead>
+                        <tbody id="mute_account_list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <label><span>PlayerID:</span><input type="number" id="upload_player_id"></label>
+                    <label><span>LobbyID:</span><input type="number" id="upload_lobby_id"></label>
+                    <button onclick="ban_upload(0)" data-lang="forbidUploadingPictures">禁止上传图片</button>
+                    <button onclick="ban_upload(1)" data-lang="unforbidUploadingPictures">解除禁止上传图片</button>
+                </div>
+                <button class="btn btn-info" type="button" onclick="queryBanUploadPlayers()"
+                        style="min-width: 60px;" data-lang="queryPlayerForbidId">查询被禁玩家ID
+                </button>
+                <div>
+                    <div class="input-group">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th ><span data-lang="forbidUploadingList">禁止上传列表</span>：</th>
+                            </tr>
+                            </thead>
+                            <tbody id="unupload_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="nav_block_21" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="searchUser">用户查询</h2>
+                <div class="col-lg-4">
+                    <div>
+                        <span data-lang="searchUserInfo">查询用户信息</span>:
+                        <input type="text" id="user_name" size="15" placeholder="account">
+                        <button onclick="QueryUserInfo()" data-lang="search">查询</button>
+                        <button onclick="QueryAllUserInfo()" data-lang="searchAllUser">查询所有用户</button>
+                        <button onclick="DeleteUser()" data-lang="deleteUser">删除用户</button>
+                    </div>
+                </div>
+                <div>
+                    <table id="userInfoTable" class="table table-striped">
+                        <caption data-lang="userInfo">用户信息</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" data-lang="username">用户名</th>
+                            <th scope="col" data-lang="password">密码</th>
+                            <th scope="col" data-lang="userGroup">用户组</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table_body">
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 data-lang="changePassword">修改密码</h2>
+                <div>
+                    <div><span data-lang="username">用户名</span>:
+                        <input type="text" id="cp_user_name">
+                    </div>
+                    <div>
+                        <span data-lang="password">密码</span> :
+                        <input type="password" id="user_pwd">
+                        <input type="password" id="confirm_pwd">
+                        <button type="submit" onclick="ChangePassword()" data-lang="submit">提交</button>
+                    </div>
+                </div>
+
+                <h2 data-lang="createUser">创建用户</h2>
+                <div>
+                    <div><span data-lang="username">用户名</span>:<input id="new_user" type="text" placeholder="most 12 words(preferably letters)"></div>
+                    <div><span data-lang="password">密码</span>:<input id="new_pwd" type="password"><span data-lang="include7_14words">包括大小写7-14个字符</span></div>
+                    <div><span data-lang="password">密码</span>:<input id="new_confirm_pwd" type="password"></div>
+                    <div>
+                        <span data-lang="accountPermissions">账号权限</span> 
+                        <select id="user_group_select">
+                            <option value="0">Have all permissions</option>
+                        </select>
+                    </div>
+                    <button type="submit" onclick="CreateUser()" data-lang="submit">提交</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav_block_22" class="nav-block jumbotron" style="display: none">
+            <div class="table-responsive">
+                <h2 class="page-header" data-lang="permissionManagement">权限管理</h2>
+                <div class="">
+                    <span> <span data-lang="permissionManagement">权限组</span>:</span>
+                    <select id="group_permission_selection">
+                    </select>
+                    <button onclick="QueryGroupPolicy()" data-lang="search">查询</button>
+                    <button onclick="DeleteGroupPermission()" data-lang="delete">删除</button>
+                    <form id="group_opt" class="form-check form-check-inline">
+                    </form>
+                    <button onclick="SaveGroupPolicy()" data-lang="save">保存</button>
+                </div>
+
+                <div>
+                    <h2 data-lang="newPermissionGroup">新建权限组</h2>
+                    <div> <span data-lang="permissionGroupName">权限组名</span> :<input id="group_name" type="text">
+                        <button type="submit" onclick="CreatePermissionGroup()" data-lang="newlyBuild">确认新建</button>
+                    </div>
+                    <form id="group_opt_2">
+                    </form>
+                </div>
+                <div>
+                    <h2 data-lang="changeUserPermissionGroup">更改用户权限组</h2>
+                    <div> <span data-lang="username">用户名</span> :<input id="group_user_name" type="text"></div>
+                    <div> <span data-lang="permission">权限</span>:
+                        <select id="group_user_selection">
+                            <option value="">--select--</option>
+                        </select>
+                        <button id="modi_btn" onclick="ChangeUserPermissionGroup()" data-lang="modify">修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: none;">
+            <iframe name="post_frame"></iframe>
+        </div>
+    </div>
+</div>
+
+<div class="row col-xs-12" id="footer">
+    <p class="e">Latest Versions of Microsoft Edge / Apple Safari / Google Chrome Required.</p>
+
+    <p class="e">COPYRIGHT &copy; 2013 – 2018 MAYDAY X.</p>
+
+    <p class="e">ALL RIGHTS RESERVED.</p>
+</div>
+<nav class="navbar navbar-default navbar-fixed-bottom alert_footer" role="navigation">
+    <div class="alert_content"></div>
+</nav>
+<script type="text/javascript" src="lang.js"></script>
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="showDialog.min.js"></script>
+<script type="text/javascript" src="ui.js"></script>
+<script type="text/javascript" src="ui_inc.js"></script>
+<script type="text/javascript" src="admin.js"></script>
+</body>
+</html>
